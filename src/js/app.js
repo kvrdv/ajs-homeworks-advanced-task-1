@@ -1,11 +1,11 @@
-const stats = [];
+export default function orderByProps(obj, arr) {
+  const stats = [];
 
-export default function orderByProps(obj, [prop1, prop2]) {
-  // перебор свойств объекта и их запись в массив (за исключением двух):
+  // перебор свойств объекта и их запись в массив:
   for (const prop in obj) {
     if ({}.hasOwnProperty.call(obj, prop)) {
       if (obj.hasOwnProperty.call(obj, prop)) {
-        if ((prop !== prop1) && (prop !== prop2)) {
+        if (arr.indexOf(prop) === -1) {
           stats.push({ key: prop, value: obj[prop] });
         }
       }
@@ -20,8 +20,10 @@ export default function orderByProps(obj, [prop1, prop2]) {
     }
   }
 
-  // добавление двух оставшихся свойств в начало массива
-  stats.unshift({ key: prop1, value: obj[prop1] }, { key: prop2, value: obj[prop2] });
+  // добавление оставшихся свойств в начало массива:
+  for (let i = arr.length - 1; i >= 0; i -= 1) {
+    stats.unshift({ key: arr[i], value: obj[arr[i]] })
+  }
 
   return stats;
 }
